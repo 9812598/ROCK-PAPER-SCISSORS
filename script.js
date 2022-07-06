@@ -1,29 +1,66 @@
-let computerSelection = function(){
+let computerSelection 
+
+function compSelect(){
     const elements = ['rock', 'paper' , 'scissors']
     let rand = Math.floor(Math.random() * elements.length)
     let compElem = elements[rand];
-    console.log('Comp: ' + compElem);
-    return compElem;
+    console.log('Comp: ' + compElem)
+    computerSelection = compElem;
 };
 
-computerSelection();
 
-let playerSelection = prompt('rock, paper or scissors?', 'rock').toLowerCase()
-console.log('Player: ' + playerSelection);
+let playerSelection
+
+function  playerSelect() {
+    let plElem = prompt('rock, paper or scissors?', 'rock').toLowerCase();
+    console.log('Player: ' + plElem);
+    playerSelection = plElem;
+}
 
 
-let result = function(){
-    if (computerSelection == playerSelection) return `Draw. Try again. You both chose ${computerSelection}`
-    switch (playerSelection) {
+let layR
+function playRound(computerSelection, playerSelection){
+    let res
+    playerSelect();
+    compSelect();
+
+    if (computerSelection == playerSelection) res = `eqval`
+    else {
+        switch (playerSelection) {
         case 'rock':
-            return (computerSelection == paper) ? `Computer wins. It has paper`: `You win. Computer has scissors`;
+            (computerSelection == 'paper') ? res = 'win': res = 'lose';
             break;
         case 'paper':
-            return (computerSelection == scissors) ? `Computer wins. It has rock`: `You win. Computer has paper`;
+            (computerSelection == 'scissors') ? res = 'win': res = 'lose';
             break;
         case 'scissors':
-            return (computerSelection == paper) ? `Computer wins. It has scissors`: `You win. Computer has rock`;
+            (computerSelection == 'paper') ? res = 'win': res = 'lose';
             break;
-    }
+        }
+        // massage
+        if (res == 'eqval') console.log(`Draw. Try again. You both chose ${computerSelection}`)
+        else if (playRound == 'win') console.log(`You win. Computer has ${computerSelection}`)
+        else console.log(`You lose. Computer has ${computerSelection}`)
+        layR = res;
 }
-console.log(result)
+}
+
+
+
+function game(){
+    let compWinCount = 0;
+    let playerWinCount = 0;
+    for (let i = 0; i < 5; i++) {
+        playRound(computerSelection, playerSelection);
+
+        if (layR == 'win') playerWinCount += 1;
+        else if (layR == 'lose') compWinCount += 1;
+     }
+    (playerWinCount < compWinCount) ? console.log(`You lose. Computer wins ${compWinCount} times`): 
+    (playerWinCount == compWinCount) ? console.log(`You have same wins as computer. Computer wins ${compWinCount} times`): 
+    console.log(`You win. Computer wins only ${compWinCount} times`);
+};
+
+
+game();
+
