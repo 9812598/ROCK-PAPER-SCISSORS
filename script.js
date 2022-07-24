@@ -11,20 +11,30 @@ function compSelect(){
 
 let playerSelection
 
-function  playerSelect() {
-    let plElem = prompt('rock, paper or scissors?', 'rock').toLowerCase();
-    console.log('Player: ' + plElem);
-    playerSelection = plElem;
+const btns = document.querySelectorAll('button');
+
+for (const btn of btns) {
+    btn.addEventListener('click', () => {
+        playerSelection = btn.id
+        compSelect()
+        playRound()
+    })
 }
+
+const text = document.createElement('div');
+document.body.appendChild(text)
+text.textContent = 'Just make your chose'
+
+let compWinCount = 0;
+let playerWinCount = 0;
 
 
 let roundResult
+
 function playRound(){
-
-    playerSelect();
-    compSelect();
-
-    if (computerSelection == playerSelection) roundResult = `eqval`
+    if (computerSelection.toString() == playerSelection.toString()) {
+        roundResult = `eqval`;
+    }
     else {
         switch (playerSelection) {
         case 'rock':
@@ -37,40 +47,49 @@ function playRound(){
             (computerSelection == 'paper') ? roundResult = 'win': roundResult = 'lose';
             break;
         }
-        // massage
-    if (roundResult == 'eqval') console.log(`Draw. Try again. You both chose ${computerSelection}`)
-    else if (roundResult == 'win') console.log(`You win. Computer has ${computerSelection}`)
-    else console.log(`You lose. Computer has ${computerSelection}`)
-    
-}
-}
+    }
+    massage()
+}    
+let ccount = document.getElementById('comp');
 
+let pcount = document.getElementById('player');
 
-
-function game(){
-    let compWinCount = 0;
-    let playerWinCount = 0;
-    for (let i = 0; i < 5; i++) {
-        playRound();
-
-        if (roundResult == 'win') {
-            playerWinCount += 1;
-            console.log(`you win ${i} round`)
+    function massage() {
+        if (roundResult == 'eqval') {
+            text.textContent =`Draw. Try again. You both chose ${computerSelection}`;
         }
-        else if (roundResult == 'lose') {
-            compWinCount += 1;
-            console.log(`you lose ${i} round`)
+        else if (roundResult == 'win') {
+            text.textContent =`You win. Computer has ${computerSelection}`;
+            playerWinCount ++;
+            console.log(`playerWinCount = ${playerWinCount}`);
+            pcount.textContent = playerWinCount;
+            check()
         }
-        else if (roundResult == 'eqval') {
-            console.log(`${i} round eqval`)
+        else {
+            text.textContent =`You lose. Computer has ${computerSelection}`;
+            compWinCount ++;
+            console.log(`compWinCount = ${compWinCount}`);
+            ccount.textContent = compWinCount;
+            check()
+            
         }
-
-     }
-    (playerWinCount < compWinCount) ? console.log(`You lose. Computer wins ${compWinCount} / ${playerWinCount}`): 
-    (playerWinCount == compWinCount) ? console.log(`You have same wins as computer.  Wins ${compWinCount} / ${playerWinCount} `): 
-    console.log(`You win. Computer wins only ${compWinCount} / ${playerWinCount}`);
 }
 
+function check(){
+    if (compWinCount > 4) {
+        alert('Sorry comp wins 5 times');
+        refresh()
+    }
 
-game();
+    if (playerWinCount > 4) {
+        alert('Congrats you wins 5 times');
+        refresh()
+    }
+}
 
+function refresh(){
+    compWinCount = 0;
+    playerWinCount = 0;
+    ccount.textContent = compWinCount;
+    pcount.textContent = playerWinCount;
+}
